@@ -1,3 +1,21 @@
 #root {
   color: red;
 }
+
+body {
+  background-color: #f7f5f7;
+}
+.episodeTile {
+  background-color: white;
+  border: 1px solid white;
+  border-radius: 4px;
+}
+
+.episodeTitle {
+}
+
+.episodeImage {
+}
+
+.episodeSummary {
+}
