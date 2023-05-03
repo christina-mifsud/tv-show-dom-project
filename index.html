@@ -9,23 +9,16 @@
   </head>
 
   <body>
-    <div id="root"></div>
-    <div class="episodeTile">
-      <h2 class="episodeTitle">Episode Title</h2>
-      <img
-        class="episodeImage"
-        src="http://static.tvmaze.com/uploads/images/medium_landscape/1/2669.jpg"
+    <div>
+      <input
+        id="search-field"
+        type="search"
+        placeholder="Search for an episode"
       />
-      <p class="episodeSummary">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi dapibus
-        nisl vitae bibendum sagittis. Aliquam erat volutpat. Curabitur eu
-        pharetra risus. Praesent orci erat, pretium quis neque non, tristique
-        dignissim nunc. Interdum et malesuada fames ac ante ipsum primis in
-        faucibus. Donec porttitor enim tristique sapien tempor, vel luctus elit
-        laoreet. Pellentesque velit augue, venenatis et congue a, dapibus eget
-        libero. Nulla sodales molestie mollis.
-      </p>
+      <span id="results"></span>
     </div>
+
+    <div id="root"></div>
 
     <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
     <script src="episodes.js"></script>

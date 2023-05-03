@@ -1,21 +1,39 @@
 #root {
-  color: red;
+  color: black;
+  background-color: #f7f5f7;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  grid-auto-rows: max-content;
+  width: 100%;
 }
 
-body {
-  background-color: #f7f5f7;
+.episode-container {
+  background-color: rgb(210, 232, 255);
+  border-radius: 10px;
 }
-.episodeTile {
+
+.episode-title {
+  text-align: center;
+  margin-top: 0px;
+  height: 40px;
+  background-color: white;
+  border: 1px solid rgb(160, 159, 159);
+  border-radius: 10px;
+}
+.episode-image {
+  margin-left: 12.5%;
+}
+.episode-blurb {
+  margin-left: 8%;
+}
+
+#episodeTile {
   background-color: white;
   border: 1px solid white;
-  border-radius: 4px;
-}
-
-.episodeTitle {
-}
-
-.episodeImage {
-}
-
-.episodeSummary {
+  border-radius: 5px;
+  width: 350px;
+  height: 500px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  text-align: center;
 }
