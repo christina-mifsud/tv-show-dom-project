@@ -23,9 +23,9 @@ function makePageForEpisodes(episodeList) {
     episodeBlurbElement.classList = "episode-blurb";
 
     // contents of elements
-    episodeTitleElement.innerHTML = `${show.name}`;
-    episodeImageElement.src = `${show.image.medium}`;
-    episodeBlurbElement.innerHTML = `${show.summary}`;
+    episodeTitleElement.innerHTML = `${episodeList[i].name}`;
+    episodeImageElement.src = `${episodeList[i].image.medium}`;
+    episodeBlurbElement.innerHTML = `${episodeList[i].summary}`;
 
     // append elements to root
     document.getElementById("root").appendChild(episodeDivContainer);
