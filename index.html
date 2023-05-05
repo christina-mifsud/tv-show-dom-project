@@ -9,13 +9,16 @@
   </head>
 
   <body>
-    <div>
+    <div id="search-bar">
       <input
-        id="search-field"
+        id="search-input"
         type="search"
         placeholder="Search for an episode"
       />
-      <span id="results"></span>
+      <label for="search"
+        >Displaying <span id="displaying-num">73</span>/73 episodes</label
+      >
+      <div id="result"></div>
     </div>
 
     <div id="root"></div>

@@ -1,14 +1,15 @@
 //You can edit ALL of the code here
-let allEpisodes;
+const allEpisodes = getAllEpisodes();
 
 function setup() {
-  allEpisodes = getAllEpisodes();
+  const allEpisodes = getAllEpisodes();
   makePageForEpisodes(allEpisodes);
 }
 
 function makePageForEpisodes(episodeList) {
   const rootElem = document.getElementById("root");
   //rootElem.textContent = `Got ${episodeList.length} episode(s)`;
+  document.getElementById("root").innerHTML = "";
   for (i = 0; i < episodeList.length; i++) {
     // create elements
     let episodeDivContainer = document.createElement("div");
@@ -41,11 +42,14 @@ window.onload = setup;
 makePageForEpisodes(allEpisodes);
 
 // search bar
-
-document.querySelector("#search").addEventListener("change", searchEpisode);
+document
+  .getElementById("search-input")
+  .addEventListener("input", searchEpisode);
 
 function searchEpisode() {
-  const searchInput = document.querySelector("#search").value.toLowerCase();
+  const searchInput = document
+    .getElementById("search-input")
+    .value.toLowerCase();
   const filteredEpisodes = allEpisodes.filter((episode) => {
     if (
       episode.name.toLowerCase().includes(searchInput) ||
@@ -55,6 +59,8 @@ function searchEpisode() {
     }
   });
 
-  document.querySelector("#num").innerText = filteredEpisodes.length;
+  document.getElementById("displaying-num").innerText = filteredEpisodes.length;
   makePageForEpisodes(filteredEpisodes);
+
+  // BUG - will search for matches even in they are part of a longer word (eg. 'die' will also show 'soldier')
 }
