@@ -8,7 +8,7 @@ function setup() {
 
 function makePageForEpisodes(episodeList) {
   const rootElem = document.getElementById("root");
-  rootElem.textContent = `Got ${episodeList.length} episode(s)`;
+  //rootElem.textContent = `Got ${episodeList.length} episode(s)`;
   for (i = 0; i < episodeList.length; i++) {
     // create elements
     let episodeDivContainer = document.createElement("div");
@@ -23,7 +23,9 @@ function makePageForEpisodes(episodeList) {
     episodeBlurbElement.classList = "episode-blurb";
 
     // contents of elements
-    episodeTitleElement.innerHTML = `${episodeList[i].name}`;
+    episodeTitleElement.innerHTML = `${episodeList[i].name}-S${String(
+      episodeList[i].season
+    ).padStart(2, "0")}E${String(episodeList[i].number).padStart(2, "0")}`;
     episodeImageElement.src = `${episodeList[i].image.medium}`;
     episodeBlurbElement.innerHTML = `${episodeList[i].summary}`;
 
@@ -38,49 +40,21 @@ function makePageForEpisodes(episodeList) {
 window.onload = setup;
 makePageForEpisodes(allEpisodes);
 
-// for (i = 0; i < episodeList.length; i++) {
-//   // create elements
-//   let episodeDivContainer = document.createElement("div");
-//   let episodeTitleElement = document.createElement("h3");
-//   let episodeImageElement = document.createElement("img");
-//   let episodeBlurbElement = document.createElement("p");
+// search bar
 
-//   // assign the divs classes
-//   episodeDivContainer.classList = "episode-container";
-//   episodeTitleElement.classList = "episode-title";
-//   episodeImageElement.classList = "episode-image";
-//   episodeBlurbElement.classList = "episode-blurb";
+document.querySelector("#search").addEventListener("change", searchEpisode);
 
-//   // contents of elements
-//   episodeTitleElement.innerHTML = `${show.name}`;
-//   episodeImageElement.src = `${show.image.medium}`;
-//   episodeBlurbElement.innerHTML = `${show.summary}`;
+function searchEpisode() {
+  const searchInput = document.querySelector("#search").value.toLowerCase();
+  const filteredEpisodes = allEpisodes.filter((episode) => {
+    if (
+      episode.name.toLowerCase().includes(searchInput) ||
+      episode.summary.toLowerCase().includes(searchInput)
+    ) {
+      return episode;
+    }
+  });
 
-//   // append elements to root
-//   document.getElementById("root").appendChild(episodeDivContainer);
-//   episodeDivContainer.appendChild(episodeTitleElement);
-//   episodeDivContainer.appendChild(episodeImageElement);
-//   episodeDivContainer.appendChild(episodeBlurbElement);
-// }
-
-////////////////////////////////////////////////////////////////
-
-// forEach
-
-//   const episodeContainer = document.getElementById("episodeContainer");
-//   rootElem.appendChild(episodeContainer);
-
-//   const episodeBlurb = document.createElement("p");
-//   const episodeStill = document.createElement("img");
-
-//   let episodeObject = getAllEpisodes(episodes); // get the episode object
-//   let episodeTitle = episodeObject.name; // then get the episode name
-//   let episodeImage = episodeObject(image).medium; // then get the episode image
-//   let episodeSummary = episodeObject.summary; // then get the episode summary
-
-//   episodeBlurb.innerText = episodeSummary;
-
-//   episodeContainer.appendChild(episodeTitle);
-//   episodeContainer.appendChild(episodeStill);
-//   episodeContainer.appendChild(episodeBlurb);
-// }
+  document.querySelector("#num").innerText = filteredEpisodes.length;
+  makePageForEpisodes(filteredEpisodes);
+}
