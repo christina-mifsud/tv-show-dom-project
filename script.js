@@ -1,8 +1,15 @@
-const allEpisodes = getAllEpisodes();
+// level 350
+function fetchAllEpisodes() {
+  fetch("https://api.tvmaze.com/shows/82/episodes")
+    .then((response) => response.json())
+    .then((data) => {
+      makePageForEpisodes(data);
+    });
+}
 
 function setup() {
-  const allEpisodes = getAllEpisodes();
-  makePageForEpisodes(allEpisodes);
+  const allEpisodes = fetchAllEpisodes();
+  //makePageForEpisodes(allEpisodes);
 }
 
 function makePageForEpisodes(episodeList) {
@@ -61,16 +68,22 @@ function makePageForEpisodes(episodeList) {
     dropdown.appendChild(option);
   }
 
+  //////////////////////////////////////////////////////////
+  /////////// HELP! Iz not working /////////////////////
   // level 300 cont. - jump to episode
   dropdown.addEventListener("change", function () {
+    let episodeDivContainer;
     let position = dropdown.value;
-    let selected = "episode-container" + position;
-    document.getElementById(selected).scrollIntoView({ behavior: "smooth" });
+    let selected = episodeDivContainer + position;
+
+    //document.getElementById(selected).scrollIntoView({ behavior: "smooth" });
+    console.log(episodeDivContainer); ///// HELP logging as undefined
+    //////////////////////////////////////////////////////////////
   });
 }
 
 window.onload = setup;
-//makePageForEpisodes(allEpisodes); // OG
+makePageForEpisodes(allEpisodes); // OG
 
 // level 200 - search bar
 
@@ -82,6 +95,9 @@ function searchEpisode() {
   const searchInput = document
     .getElementById("search-input")
     .value.toLowerCase();
+
+  /// HELP getting error saying allEpisodes not defined after adding fetch.
+
   const filteredEpisodes = allEpisodes.filter((episode) => {
     if (
       episode.name.toLowerCase().includes(searchInput) ||
