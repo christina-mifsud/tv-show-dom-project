@@ -24,6 +24,9 @@ function makePageForEpisodes(episodeList) {
     episodeImageElement.classList.add("episode-image");
     episodeBlurbElement.classList.add("episode-blurb");
 
+    // assign unique ID to individual episode-container
+    episodeDivContainer.id = "episode-container" + i;
+
     // step 2 - contents of elements
     episodeTitleElement.innerHTML = `${episodeList[i].name}-S${String(
       episodeList[i].season
@@ -57,10 +60,17 @@ function makePageForEpisodes(episodeList) {
       .padStart(2, "0")} - ${episodeList[i].name}`;
     dropdown.appendChild(option);
   }
+
+  // level 300 cont. - jump to episode
+  dropdown.addEventListener("change", function () {
+    let position = dropdown.value;
+    let selected = "episode-container" + position;
+    document.getElementById(selected).scrollIntoView({ behavior: "smooth" });
+  });
 }
 
 window.onload = setup;
-makePageForEpisodes(allEpisodes); // OG
+//makePageForEpisodes(allEpisodes); // OG
 
 // level 200 - search bar
 
@@ -86,6 +96,8 @@ function searchEpisode() {
 
   // BUG - will search for matches even in they are part of a longer word (eg. 'die' will also show 'soldier')
 }
+
+//////////////////////////////////////////
 
 ///// window.location.href = option.value = `${episode.url}` -> to open episode URL
 
