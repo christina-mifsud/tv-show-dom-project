@@ -1,15 +1,21 @@
 // level 350
 function fetchAllEpisodes() {
-  fetch("https://api.tvmaze.com/shows/82/episodes")
-    .then((response) => response.json())
-    .then((data) => {
-      makePageForEpisodes(data);
-    });
+  return (
+    fetch("https://api.tvmaze.com/shows/82/episodes")
+      .then((response) => response.json())
+      // .then((data) => {
+      //   makePageForEpisodes(data);
+      // })
+      .catch(function (error) {
+        console.log(error);
+      })
+  );
 }
+/////// allEpisodes scope is messed up
 
-function setup() {
-  const allEpisodes = fetchAllEpisodes();
-  //makePageForEpisodes(allEpisodes);
+async function setup() {
+  const allEpisodes = await fetchAllEpisodes();
+  makePageForEpisodes(allEpisodes);
 }
 
 function makePageForEpisodes(episodeList) {
@@ -68,17 +74,14 @@ function makePageForEpisodes(episodeList) {
     dropdown.appendChild(option);
   }
 
-  //////////////////////////////////////////////////////////
-  /////////// HELP! Iz not working /////////////////////
   // level 300 cont. - jump to episode
-  dropdown.addEventListener("change", function () {
-    let episodeDivContainer;
-    let position = dropdown.value;
-    let selected = episodeDivContainer + position;
 
-    //document.getElementById(selected).scrollIntoView({ behavior: "smooth" });
-    console.log(episodeDivContainer); ///// HELP logging as undefined
-    //////////////////////////////////////////////////////////////
+  dropdown.addEventListener("change", function () {
+    let position = dropdown.selectedIndex - 1; // get index of selected option (-1 for placeholder)
+    let episodeDivContainer = document.getElementById(
+      "episode-container" + position
+    ); // finding the corresponding episodeDivContainer
+    episodeDivContainer.scrollIntoView({ behavior: "smooth" }); //scrolling to said episodeDivContainer container
   });
 }
 
