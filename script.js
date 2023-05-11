@@ -1,21 +1,21 @@
 // level 350
-function fetchAllEpisodes() {
-  return (
-    fetch("https://api.tvmaze.com/shows/82/episodes")
-      .then((response) => response.json())
-      // .then((data) => {
-      //   makePageForEpisodes(data);
-      // })
-      .catch(function (error) {
-        console.log(error);
-      })
-  );
-}
-/////// allEpisodes scope is messed up
+let allEpisodes; // global scope to be accessible from inside all functions
 
-async function setup() {
-  const allEpisodes = await fetchAllEpisodes();
-  makePageForEpisodes(allEpisodes);
+function fetchAllEpisodes() {
+  return fetch("https://api.tvmaze.com/shows/82/episodes")
+    .then((response) => response.json())
+    .then((data) => {
+      allEpisodes = data; // this was done to move allEpisodes to global scope
+      makePageForEpisodes(allEpisodes);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+
+function setup() {
+  fetchAllEpisodes();
+  // makePageForEpisodes(allEpisodes);
 }
 
 function makePageForEpisodes(episodeList) {
@@ -86,7 +86,7 @@ function makePageForEpisodes(episodeList) {
 }
 
 window.onload = setup;
-makePageForEpisodes(allEpisodes); // OG
+//makePageForEpisodes(allEpisodes); // OG
 
 // level 200 - search bar
 
@@ -98,8 +98,6 @@ function searchEpisode() {
   const searchInput = document
     .getElementById("search-input")
     .value.toLowerCase();
-
-  /// HELP getting error saying allEpisodes not defined after adding fetch.
 
   const filteredEpisodes = allEpisodes.filter((episode) => {
     if (
