@@ -1,8 +1,16 @@
-// level 350
+// level 350 - fetch live data
 let allEpisodes; // global scope to be accessible from inside all functions
 
+//////////////////////////////////////////
+
+/////////////// HELP!! //////////////////
+// Do I have to keep everything the same as I will still be displaying the episodes of the selected show?
+
+const allShows = getAllShows();
+//let showID = show.id;
+
 function fetchAllEpisodes() {
-  return fetch("https://api.tvmaze.com/shows/82/episodes")
+  return fetch(`https://api.tvmaze.com/shows/${showID}/episodes`)
     .then((response) => response.json())
     .then((data) => {
       allEpisodes = data; // this was done to move allEpisodes to global scope
@@ -13,17 +21,20 @@ function fetchAllEpisodes() {
     });
 }
 
+//////////////////////////////////////////
+
 function setup() {
+  const allShows = getAllShows();
   fetchAllEpisodes();
   // makePageForEpisodes(allEpisodes);
+  // makePageForEpisodes(allShows); // array is being accessed
 }
 
 function makePageForEpisodes(episodeList) {
   const rootElem = document.getElementById("root");
-  //rootElem.textContent = `Got ${episodeList.length} episode(s)`;
 
   // level 100
-  document.getElementById("root").innerHTML = "";
+  document.getElementById("root").innerHTML = ""; // clear out old content so it is replaced by the new content
   for (i = 0; i < episodeList.length; i++) {
     // step 1 - create elements
     let episodeDivContainer = document.createElement("div");
@@ -56,12 +67,12 @@ function makePageForEpisodes(episodeList) {
 
   // level 300 - episode selector
 
-  let dropdown = document.getElementById("episode-select");
+  let episodeDropdown = document.getElementById("episode-select");
 
-  let defaultOption = document.createElement("option"); // step 1 createElement
-  defaultOption.textContent = "Select Episode"; // step 2 set textContent
-  dropdown.appendChild(defaultOption); // step 3 appendChild
-  dropdown.selectedIndex = 0;
+  let defaultEpisodeOption = document.createElement("option"); // step 1 createElement
+  defaultEpisodeOption.textContent = "Select Episode"; // step 2 set textContent
+  episodeDropdown.appendChild(defaultEpisodeOption); // step 3 appendChild
+  episodeDropdown.selectedIndex = 0;
 
   for (i = 0; i < episodeList.length; i++) {
     let option = document.createElement("option");
@@ -71,18 +82,57 @@ function makePageForEpisodes(episodeList) {
       .padStart(2, "0")}E${episodeList[i].number
       .toString()
       .padStart(2, "0")} - ${episodeList[i].name}`;
-    dropdown.appendChild(option);
+    episodeDropdown.appendChild(option);
   }
 
   // level 300 cont. - jump to episode
 
-  dropdown.addEventListener("change", function () {
-    let position = dropdown.selectedIndex - 1; // get index of selected option (-1 for placeholder)
+  episodeDropdown.addEventListener("change", function () {
+    let optionSelection = episodeDropdown.selectedIndex - 1; // get index of selected option (-1 for placeholder)
     let episodeDivContainer = document.getElementById(
-      "episode-container" + position
-    ); // finding the corresponding episodeDivContainer
+      "episode-container" + optionSelection
+    ); // finding the corresponding episodeDivContainer using the ID
     episodeDivContainer.scrollIntoView({ behavior: "smooth" }); //scrolling to said episodeDivContainer container
   });
+
+  //////////////////////////////////////////
+
+  // level 400 - show selector
+
+  // select dropdown for shows - list of shows comes from array
+  // get selectedIndex of dropdown
+  // compare selectedIndex.value to show.id.
+  // then find the SHOW ID and use it in fetch https://api.tvmaze.com/shows/SHOW_ID/episodes to get the episodes.
+  // then show's episodes should:
+  // 1. be fetched and
+  // 2. be displayed
+  // shows to be alphabetic order (.toLowerCase then sort() method - new array ?) and case-insensitive - https://www.freecodecamp.org/news/how-to-sort-alphabetically-in-javascript/
+
+  // create show dropdown
+  let showDropdown = document.getElementById("show-select");
+
+  let defaultShowOption = document.createElement("option"); // step 1 createElement
+  defaultShowOption.textContent = "Select Show"; // step 2 set textContent
+  showDropdown.appendChild(defaultShowOption); // step 3 appendChild
+  showDropdown.selectedIndex = 0;
+
+  for (i = 0; i < showsList.length; i++) {
+    // why can't I access this showList?
+    let option = document.createElement("option");
+    option.value = showList[i].name;
+    option.textContent = `${showList[i].name}`;
+    showDropdown.appendChild(option);
+  }
+
+  // get selectedIndex of dropdown & compare selectedIndex.value to show.name
+  showDropdown.addEventListener("change", function () {
+    let showOptionSelection = showDropdown.selectedIndex - 1; // get index of selected option (-1 for placeholder)
+    // finding the corresponding show object and get the showID
+    if (showOptionSelection === showList.id) {
+    }
+  });
+
+  //////////////////////////////////////////
 }
 
 window.onload = setup;
@@ -113,6 +163,8 @@ function searchEpisode() {
 
   // BUG - will search for matches even in they are part of a longer word (eg. 'die' will also show 'soldier')
 }
+
+// BUG - if you have a search ongoing, the select will not work
 
 //////////////////////////////////////////
 

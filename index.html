@@ -9,6 +9,10 @@
   </head>
 
   <body>
+    <div id="show-selector">
+      <select name="show-list" id="show-select"></select>
+    </div>
+
     <div id="episode-selector">
       <select name="episodes-list" id="episode-select"></select>
     </div>
@@ -19,9 +23,7 @@
         type="search"
         placeholder="Search for an episode"
       />
-      <label for="search"
-        >Displaying <span id="displaying-num">73</span>/73 episodes</label
-      >
+      <label>Displaying <span id="displaying-num">73</span>/73 episodes</label>
       <div id="result"></div>
     </div>
 
@@ -36,6 +38,8 @@
 
     <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
     <script src="episodes.js"></script>
+    <!-- Loads a provided function called getAllShows() which returns all shows -->
+    <script src="shows.js"></script>
 
     <!-- Loads YOUR javascript code -->
     <script src="script.js"></script>
