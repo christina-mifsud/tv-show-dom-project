@@ -14,19 +14,9 @@ function fetchAllEpisodes(tvSeriesId) {
 }
 
 //////////////////////////////////////////
-// level 400 - show selector
+// level 400 - show selector drop down
 
-// select dropdown for shows - list of shows comes from array
-// get selectedIndex of dropdown choice
-// compare selectedIndex.value to show.id.
-// then find the SHOW ID and use it in fetch https://api.tvmaze.com/shows/SHOW_ID/episodes to get the episodes.
-// then show's episodes should:
-// 1. be fetched and
-// 2. be displayed
-// shows to be alphabetic order (.toLowerCase then sort() method - new array ?) and case-insensitive - https://www.freecodecamp.org/news/how-to-sort-alphabetically-in-javascript/
-
-function tvSeriesSetup(showList) {
-  // this is the same as seriesList
+function tvSeriesSetup(seriesList) {
   // create show dropdown
   let showDropdown = document.getElementById("show-select");
 
@@ -36,20 +26,19 @@ function tvSeriesSetup(showList) {
   showDropdown.selectedIndex = 0;
 
   //sort happens here BEFORE for loop
-  showList.sort(function (a, b) {
+  seriesList.sort(function (a, b) {
     return a.name.localeCompare(b.name); // localeCompare means you can compare strings not just numbers
   });
 
-  for (i = 0; i < showList.length; i++) {
+  for (i = 0; i < seriesList.length; i++) {
     let option = document.createElement("option");
-    option.value = showList[i].id;
-    option.textContent = `${showList[i].name}`;
+    option.value = seriesList[i].id;
+    option.textContent = `${seriesList[i].name}`;
     showDropdown.appendChild(option);
   }
 
   // get selectedIndex of dropdown & compare selectedIndex.value to show.name
   showDropdown.addEventListener("change", function () {
-    console.log(showDropdown.value);
     fetchAllEpisodes(showDropdown.value);
   });
 }
@@ -57,14 +46,15 @@ function tvSeriesSetup(showList) {
 function setup() {
   const seriesList = getAllShows();
   tvSeriesSetup(seriesList);
-  // makePageForEpisodes(allEpisodes);
+  makePageForShows(seriesList);
+  makePageForEpisodes(episodeList);
 }
 
 function makePageForEpisodes(episodeList) {
-  const rootElem = document.getElementById("root");
+  const episodesPage = document.getElementById("episodes-page");
 
   // level 100
-  document.getElementById("root").innerHTML = ""; // clear out old content so it is replaced by the new content
+  document.getElementById("episodes-page").innerHTML = ""; // clear out old content so it is replaced by the new content
   for (i = 0; i < episodeList.length; i++) {
     // step 1 - create elements
     let episodeDivContainer = document.createElement("div");
@@ -88,8 +78,8 @@ function makePageForEpisodes(episodeList) {
     episodeImageElement.src = `${episodeList[i].image.medium}`;
     episodeBlurbElement.innerHTML = `${episodeList[i].summary}`;
 
-    // step 3 - append elements to root
-    document.getElementById("root").appendChild(episodeDivContainer);
+    // step 3 - append elements to episodes-page
+    document.getElementById("episodes-page").appendChild(episodeDivContainer);
     episodeDivContainer.appendChild(episodeTitleElement);
     episodeDivContainer.appendChild(episodeImageElement);
     episodeDivContainer.appendChild(episodeBlurbElement);
@@ -126,7 +116,6 @@ function makePageForEpisodes(episodeList) {
   });
 }
 
-window.onload = setup;
 //makePageForEpisodes(allEpisodes); // OG
 
 // level 200 - search bar
@@ -161,6 +150,80 @@ function searchEpisode() {
 
 //////////////////////////////////////////
 
+// TODO
+// - avoid using global variable
+// - separate using functions
+
+//////////////////////////////////////////
+
 ///// window.location.href = option.value = `${episode.url}` -> to open episode URL
 
 //////////////////////////////////////////
+
+//////////////////////////////////////////
+// level 500 - show list and search
+
+// listing of all shows as a tile with info - list of shows comes from array
+// make show tile clickable
+// get selectedIndex of show choice
+// compare selectedIndex.value to show.id.
+// then find the SHOW ID and use it in fetch https://api.tvmaze.com/shows/SHOW_ID/episodes to get the episodes.
+// 1. then show's episodes should be fetched and displayed
+// 2. hide show listing tiles // display: hidden
+// add home button --> make shows appear
+// add search for shows (through show names, genres, and summary texts)
+
+function makePageForShows(seriesList) {
+  const seriesPage = document.getElementById("series-page");
+
+  document.getElementById("series-page").innerHTML = ""; // clear out old content so it is replaced by the new content
+  for (i = 0; i < seriesList.length; i++) {
+    // step 1 - create elements
+    let seriesDivContainer = document.createElement("div");
+    let seriesTitleElement = document.createElement("h3");
+    let seriesInfoDivElement = document.createElement("div");
+    let seriesImageElement = document.createElement("img");
+    let seriesBlurbElement = document.createElement("p");
+    let seriesRatingElement = document.createElement("p");
+
+    // assign the divs classes
+    seriesDivContainer.classList.add("series-container");
+    seriesTitleElement.classList.add("series-title");
+    seriesInfoDivElement.classList.add("series-info");
+    seriesImageElement.classList.add("series-image");
+    seriesBlurbElement.classList.add("series-blurb");
+    seriesRatingElement.classList.add("series-rating");
+
+    // step 2 - contents of elements
+    seriesTitleElement.innerHTML = `${seriesList[i].name}`;
+    seriesImageElement.src = `${seriesList[i].image.medium}`;
+    seriesBlurbElement.innerHTML = `${seriesList[i].summary}`;
+    seriesRatingElement.innerHTML = `Rated: ${seriesList[i].rating.average} Genre: ${seriesList[i].genres} Status: ${seriesList[i].status} Runtime: ${seriesList[i].runtime}`;
+
+    // step 3 - append elements to series-page
+    document
+      .getElementById("series-page")
+      .appendChild(seriesDivContainer)
+      .appendChild(seriesInfoDivElement);
+    seriesInfoDivElement.appendChild(seriesTitleElement);
+    seriesInfoDivElement.appendChild(seriesImageElement);
+    seriesInfoDivElement.appendChild(seriesBlurbElement);
+    seriesInfoDivElement.appendChild(seriesRatingElement);
+  }
+
+  ////////////////////// HELP!! /////////////////////////////////
+  // make show tile clickable to get show.id and use it in fetch
+  let seriesSelection = document.querySelector(".series-container");
+
+  seriesSelection.addEventListener("click", function () {
+    let selectedSeriesContainer = document.getElementById(
+      "series-container" + seriesList[i].id
+    );
+    if (selectedSeriesContainer === seriesList.id)
+      // finding the corresponding seriesDivContainer using the ID
+      console.log("HELLOOOOOOOOOOOOO");
+  });
+}
+
+//////////////////////////////////////////////////////////////////
+window.onload = setup;
