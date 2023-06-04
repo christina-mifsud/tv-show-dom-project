@@ -1,8 +1,13 @@
 // level 350 - fetch live data
 let allEpisodes; // global scope to be accessible from inside all functions
 
-function fetchAllEpisodes(tvSeriesId) {
-  return fetch(`https://api.tvmaze.com/shows/${tvSeriesId}/episodes`)
+////////////////////////// HELP!! ///////////////////////////////
+// Why is the fetch not fetching the episodes?
+
+function fetchAllEpisodes(selectedSeriesContainer) {
+  return fetch(
+    `https://api.tvmaze.com/shows/${selectedSeriesContainer}/episodes`
+  )
     .then((response) => response.json())
     .then((data) => {
       allEpisodes = data; // this was done to move allEpisodes to global scope
@@ -13,7 +18,6 @@ function fetchAllEpisodes(tvSeriesId) {
     });
 }
 
-//////////////////////////////////////////
 // level 400 - show selector drop down
 
 function tvSeriesSetup(seriesList) {
@@ -47,7 +51,7 @@ function setup() {
   const seriesList = getAllShows();
   tvSeriesSetup(seriesList);
   makePageForShows(seriesList);
-  makePageForEpisodes(episodeList);
+  //makePageForEpisodes(episodeList); OG
 }
 
 function makePageForEpisodes(episodeList) {
@@ -165,8 +169,7 @@ function searchEpisode() {
 
 // listing of all shows as a tile with info - list of shows comes from array
 // make show tile clickable
-// get selectedIndex of show choice
-// compare selectedIndex.value to show.id.
+// get show.id of clicked item -- DONE!
 // then find the SHOW ID and use it in fetch https://api.tvmaze.com/shows/SHOW_ID/episodes to get the episodes.
 // 1. then show's episodes should be fetched and displayed
 // 2. hide show listing tiles // display: hidden
@@ -186,6 +189,8 @@ function makePageForShows(seriesList) {
     let seriesBlurbElement = document.createElement("p");
     let seriesRatingElement = document.createElement("p");
 
+    seriesDivContainer.setAttribute("data-showID", seriesList[i].id);
+
     // assign the divs classes
     seriesDivContainer.classList.add("series-container");
     seriesTitleElement.classList.add("series-title");
@@ -196,7 +201,9 @@ function makePageForShows(seriesList) {
 
     // step 2 - contents of elements
     seriesTitleElement.innerHTML = `${seriesList[i].name}`;
-    seriesImageElement.src = `${seriesList[i].image.medium}`;
+    if (seriesList[i].image !== null) {
+      seriesImageElement.src = `${seriesList[i].image.medium}`;
+    }
     seriesBlurbElement.innerHTML = `${seriesList[i].summary}`;
     seriesRatingElement.innerHTML = `Rated: ${seriesList[i].rating.average} Genre: ${seriesList[i].genres} Status: ${seriesList[i].status} Runtime: ${seriesList[i].runtime}`;
 
@@ -209,20 +216,13 @@ function makePageForShows(seriesList) {
     seriesInfoDivElement.appendChild(seriesImageElement);
     seriesInfoDivElement.appendChild(seriesBlurbElement);
     seriesInfoDivElement.appendChild(seriesRatingElement);
+
+    seriesDivContainer.addEventListener("click", function (eventObject) {
+      // this is getting the show id of clicked box
+      let selectedSeriesContainer = eventObject.currentTarget;
+      console.log(selectedSeriesContainer);
+    });
   }
-
-  ////////////////////// HELP!! /////////////////////////////////
-  // make show tile clickable to get show.id and use it in fetch
-  let seriesSelection = document.querySelector(".series-container");
-
-  seriesSelection.addEventListener("click", function () {
-    let selectedSeriesContainer = document.getElementById(
-      "series-container" + seriesList[i].id
-    );
-    if (selectedSeriesContainer === seriesList.id)
-      // finding the corresponding seriesDivContainer using the ID
-      console.log("HELLOOOOOOOOOOOOO");
-  });
 }
 
 //////////////////////////////////////////////////////////////////
