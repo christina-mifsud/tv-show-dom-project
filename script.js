@@ -1,22 +1,109 @@
 // level 350 - fetch live data
 let allEpisodes; // global scope to be accessible from inside all functions
+let selectedSeriesContainer = "";
+let seriesList = getAllShows();
+
+function setup() {
+  makePageForShows(seriesList);
+}
+//sorting shows in alphabetical order
+seriesList.sort(function (a, b) {
+  return a.name.localeCompare(b.name);
+});
+
+//showing all shows
+
+//////////////////////////////////////////
+// level 500 - show list and search
+
+// listing of all shows as a tile with info - list of shows comes from array
+// make show tile clickable
+// get show.id of clicked item -- DONE!
+// then find the SHOW ID and use it in fetch https://api.tvmaze.com/shows/SHOW_ID/episodes to get the episodes.
+// 1. then show's episodes should be fetched and displayed
+// 2. hide show listing tiles // display: hidden
+// add home button --> make shows appear
+// add search for shows (through show names, genres, and summary texts)
+
+function makePageForShows(seriesList) {
+  const seriesPage = document.getElementById("series-page");
+
+  document.getElementById("series-page").innerHTML = ""; // clear out old content so it is replaced by the new content
+  for (i = 0; i < seriesList.length; i++) {
+    // step 1 - create elements
+    let seriesDivContainer = document.createElement("div");
+    let seriesTitleElement = document.createElement("h3");
+    let seriesInfoDivElement = document.createElement("div");
+    let seriesImageElement = document.createElement("img");
+    let seriesBlurbElement = document.createElement("p");
+    let seriesRatingElement = document.createElement("p");
+
+    seriesDivContainer.setAttribute("data-showID", seriesList[i].id);
+
+    // assign the divs classes
+    seriesDivContainer.classList.add("series-container");
+    seriesTitleElement.classList.add("series-title");
+    seriesInfoDivElement.classList.add("series-info");
+    seriesImageElement.classList.add("series-image");
+    seriesBlurbElement.classList.add("series-blurb");
+    seriesRatingElement.classList.add("series-rating");
+
+    // step 2 - contents of elements
+    seriesTitleElement.innerHTML = `${seriesList[i].name}`;
+    if (seriesList[i].image !== null) {
+      seriesImageElement.src = `${seriesList[i].image.medium}`;
+    }
+    seriesBlurbElement.innerHTML = `${seriesList[i].summary}`;
+    seriesRatingElement.innerHTML = `Rated: ${seriesList[i].rating.average} Genre: ${seriesList[i].genres} Status: ${seriesList[i].status} Runtime: ${seriesList[i].runtime}`;
+
+    // step 3 - append elements to series-page
+    document
+      .getElementById("series-page")
+      .appendChild(seriesDivContainer)
+      .appendChild(seriesInfoDivElement);
+    seriesInfoDivElement.appendChild(seriesTitleElement);
+    seriesInfoDivElement.appendChild(seriesImageElement);
+    seriesInfoDivElement.appendChild(seriesBlurbElement);
+    seriesInfoDivElement.appendChild(seriesRatingElement);
+
+    seriesDivContainer.addEventListener("click", function (eventObject) {
+      // this is getting the show id of clicked box
+      selectedSeriesContainer = eventObject.currentTarget;
+      console.log(selectedSeriesContainer);
+      fetch(
+        `https://api.tvmaze.com/shows/${selectedSeriesContainer.dataset.showid}/episodes`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          allEpisodes = data; // this was done to move allEpisodes to global scope
+          makePageForEpisodes(allEpisodes);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    });
+  }
+}
+
+window.onload = setup;
+//////////////////////////////////////////////////////////////////
 
 ////////////////////////// HELP!! ///////////////////////////////
 // Why is the fetch not fetching the episodes?
 
-function fetchAllEpisodes(selectedSeriesContainer) {
-  return fetch(
-    `https://api.tvmaze.com/shows/${selectedSeriesContainer}/episodes`
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      allEpisodes = data; // this was done to move allEpisodes to global scope
-      makePageForEpisodes(allEpisodes);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-}
+// function fetchAllEpisodes(selectedSeriesContainer) {
+//   return fetch(
+//     `https://api.tvmaze.com/shows/${selectedSeriesContainer}/episodes`
+//   )
+//     .then((response) => response.json())
+//     .then((data) => {
+//       allEpisodes = data; // this was done to move allEpisodes to global scope
+//       makePageForEpisodes(allEpisodes);
+//     })
+//     .catch(function (error) {
+//       console.log(error);
+//     });
+// }
 
 // level 400 - show selector drop down
 
@@ -53,6 +140,8 @@ function setup() {
   makePageForShows(seriesList);
   //makePageForEpisodes(episodeList); OG
 }
+
+/////////////////////////////////////////////////////
 
 function makePageForEpisodes(episodeList) {
   const episodesPage = document.getElementById("episodes-page");
@@ -163,67 +252,3 @@ function searchEpisode() {
 ///// window.location.href = option.value = `${episode.url}` -> to open episode URL
 
 //////////////////////////////////////////
-
-//////////////////////////////////////////
-// level 500 - show list and search
-
-// listing of all shows as a tile with info - list of shows comes from array
-// make show tile clickable
-// get show.id of clicked item -- DONE!
-// then find the SHOW ID and use it in fetch https://api.tvmaze.com/shows/SHOW_ID/episodes to get the episodes.
-// 1. then show's episodes should be fetched and displayed
-// 2. hide show listing tiles // display: hidden
-// add home button --> make shows appear
-// add search for shows (through show names, genres, and summary texts)
-
-function makePageForShows(seriesList) {
-  const seriesPage = document.getElementById("series-page");
-
-  document.getElementById("series-page").innerHTML = ""; // clear out old content so it is replaced by the new content
-  for (i = 0; i < seriesList.length; i++) {
-    // step 1 - create elements
-    let seriesDivContainer = document.createElement("div");
-    let seriesTitleElement = document.createElement("h3");
-    let seriesInfoDivElement = document.createElement("div");
-    let seriesImageElement = document.createElement("img");
-    let seriesBlurbElement = document.createElement("p");
-    let seriesRatingElement = document.createElement("p");
-
-    seriesDivContainer.setAttribute("data-showID", seriesList[i].id);
-
-    // assign the divs classes
-    seriesDivContainer.classList.add("series-container");
-    seriesTitleElement.classList.add("series-title");
-    seriesInfoDivElement.classList.add("series-info");
-    seriesImageElement.classList.add("series-image");
-    seriesBlurbElement.classList.add("series-blurb");
-    seriesRatingElement.classList.add("series-rating");
-
-    // step 2 - contents of elements
-    seriesTitleElement.innerHTML = `${seriesList[i].name}`;
-    if (seriesList[i].image !== null) {
-      seriesImageElement.src = `${seriesList[i].image.medium}`;
-    }
-    seriesBlurbElement.innerHTML = `${seriesList[i].summary}`;
-    seriesRatingElement.innerHTML = `Rated: ${seriesList[i].rating.average} Genre: ${seriesList[i].genres} Status: ${seriesList[i].status} Runtime: ${seriesList[i].runtime}`;
-
-    // step 3 - append elements to series-page
-    document
-      .getElementById("series-page")
-      .appendChild(seriesDivContainer)
-      .appendChild(seriesInfoDivElement);
-    seriesInfoDivElement.appendChild(seriesTitleElement);
-    seriesInfoDivElement.appendChild(seriesImageElement);
-    seriesInfoDivElement.appendChild(seriesBlurbElement);
-    seriesInfoDivElement.appendChild(seriesRatingElement);
-
-    seriesDivContainer.addEventListener("click", function (eventObject) {
-      // this is getting the show id of clicked box
-      let selectedSeriesContainer = eventObject.currentTarget;
-      console.log(selectedSeriesContainer);
-    });
-  }
-}
-
-//////////////////////////////////////////////////////////////////
-window.onload = setup;
