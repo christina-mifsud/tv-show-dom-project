@@ -18,9 +18,9 @@ seriesList.sort(function (a, b) {
 
 // listing of all shows as a tile with info - list of shows comes from array
 // make show tile clickable
-// get show.id of clicked item -- DONE!
+// get show.id of clicked item
 // then find the SHOW ID and use it in fetch https://api.tvmaze.com/shows/SHOW_ID/episodes to get the episodes.
-// 1. then show's episodes should be fetched and displayed
+// 1. then show's episodes should be fetched and displayed -- DONE!
 // 2. hide show listing tiles // display: hidden
 // add home button --> make shows appear
 // add search for shows (through show names, genres, and summary texts)
