@@ -1,3 +1,80 @@
 #root {
-  color: red;
+  color: black;
+  background-color: #f5f5f5;
+}
+
+#episodes-page {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 380px);
+  /* grid-template-columns: repeat(4, 1fr); */
+  gap: 30px;
+  grid-auto-rows: max-content;
+  width: 100%;
+}
+
+.episode-container {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.14);
+  text-align: center;
+}
+
+.episode-title {
+  text-align: center;
+  margin-top: 1rem;
+  height: 40px;
+  background-color: white;
+  border: 1px solid white;
+  border-radius: 10px;
+}
+.episode-image {
+  align-items: center;
+}
+.episode-blurb {
+  align-items: center;
+  text-align: left;
+  padding: 1rem 2.5rem;
+}
+
+#series-page {
+  display: grid;
+  grid-template-columns: repeat(1200px);
+  row-gap: 30px;
+  grid-auto-rows: max-content;
+  width: 100%;
+}
+.series-container {
+  position: relative;
+}
+
+.series-title {
+  margin-top: 2rem;
+  position: absolute;
+  top: -10px;
+  left: 2rem;
+}
+.series-info {
+  padding-top: 3rem;
+  display: flex;
+  justify-content: center;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.14);
+  text-align: left;
+}
+
+.series-image {
+  align-items: center;
+  padding: 1rem;
+}
+.series-blurb {
+  align-items: center;
+  text-align: left;
+  padding: 1rem 2.5rem;
+}
+
+.series-rating {
+  align-items: center;
+  text-align: left;
+  padding: 1rem 2.5rem;
 }

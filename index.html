@@ -3,17 +3,47 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TV Show Project | My Name (My GitHub username)</title>
+    <title>TV Show Project | Christina Mifsud (christina-mifsud)</title>
     <link href="style.css" rel="stylesheet" />
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   </head>
 
   <body>
-    <div id="root">
+    <div id="root"></div>
+
+    <div id="show-selector">
+      <select name="show-list" id="show-select"></select>
     </div>
+
+    <div id="episode-selector">
+      <select name="episodes-list" id="episode-select"></select>
+    </div>
+
+    <div id="search-bar">
+      <input
+        id="search-input"
+        type="search"
+        placeholder="Search for an episode"
+      />
+      <label>Displaying <span id="displaying-num">73</span>/73 episodes</label>
+      <div id="result"></div>
+    </div>
+
+    <div id="episodes-page"></div>
+
+    <div id="series-page"></div>
+
+    <footer>
+      <p>
+        Data originally from
+        <a href="https://www.tvmaze.com/"> TVMaze.com</a>.
+      </p>
+    </footer>
 
     <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
     <script src="episodes.js"></script>
+    <!-- Loads a provided function called getAllShows() which returns all shows -->
+    <script src="shows.js"></script>
 
     <!-- Loads YOUR javascript code -->
     <script src="script.js"></script>
